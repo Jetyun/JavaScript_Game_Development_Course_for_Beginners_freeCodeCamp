@@ -1,4 +1,6 @@
 const canvas= document.getElementById('canvas1')
+const select = document.getElementById('select')
+
 const ctx = canvas.getContext('2d')
 const CANVAS_WIDTH=canvas.width=600
 const CANVAS_HEIGHT=canvas.height=600
@@ -6,7 +8,8 @@ const spriteWidth = 575
 const spriteHeight = 523
 let gameFrame = 0
 let staggerFrames =5
-
+const playerImage =new Image()
+playerImage.src='./public/shadow_dog.png'
 const spriteAnimations =[]
 const animationStates=[
     {
@@ -19,7 +22,7 @@ const animationStates=[
     },
     {
         name:'fall',
-        frames: 9,
+        frames: 7,
     },
     {
         name:'run',
@@ -31,7 +34,7 @@ const animationStates=[
     },
     {
         name:'sit',
-        frames: 7,
+        frames: 5,
     },
     {
         name:'roll',
@@ -51,6 +54,7 @@ const animationStates=[
     },
 ]
 animationStates.forEach((state, index)=>{
+
     let frames={
         loc:[],
     }
@@ -60,18 +64,23 @@ for(let j=0; j<state.frames; j++){
     frames.loc.push({x: positionX, y:positionY})
 
 }
+
 spriteAnimations[state.name]=frames
+select.innerHTML+=`<option value="${state.name}">${state.name}</option>`
 
 })
-console.log(spriteAnimations)
-const playerImage =new Image()
-playerImage.src='./public/shadow_dog.png'
+let playerState= "idle"
+select.addEventListener('change', function(e){
+   playerState = e.target.value
+
+
+})
 function animate(){
 ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
-let position = Math.floor(gameFrame/staggerFrames) % spriteAnimations['idle'].loc.length
+let position = Math.floor(gameFrame/staggerFrames) % spriteAnimations[playerState].loc.length
 let frameX = spriteWidth*position
-let frameY = spriteAnimations['idle'].loc[position].y
-ctx.drawImage(playerImage, frameX* spriteWidth, frameY, spriteWidth, spriteHeight, 0 ,0, CANVAS_WIDTH, CANVAS_HEIGHT)
+let frameY = spriteAnimations[playerState].loc[position].y
+ctx.drawImage(playerImage, frameX, frameY, spriteWidth, spriteHeight, 0 ,0, CANVAS_WIDTH, CANVAS_HEIGHT)
 
 gameFrame++
 requestAnimationFrame(animate)
