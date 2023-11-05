@@ -1,0 +1,16 @@
+body{
+    background: black;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+p{
+    color: white;
+}
+#canvas1{
+    border: 3px solid white;
+    width: 800px;
+    height: 700px;
+
+}
